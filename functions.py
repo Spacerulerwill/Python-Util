@@ -5,7 +5,6 @@ import time
 import sys
 from colorama import Fore, Back
 from colorama import init as colorama_init
-import os
 import string
 from pynput import keyboard
 import random
@@ -100,17 +99,31 @@ def selectOptions(msg:str, options:List[str], mode:str=NUMERIC, case_sensitive=F
                 else:
                     return options[lowercase_options.index(choice.lower())]
 
-def dropdownMenu(title, options, color=Back.WHITE):
+def dropdownMenu(title, options, bg=Back.WHITE, text_color=Fore.BLACK):
     '''
     A function that creates a drop down menu the user can interact with via the up and down arrow keys
-    and the enter button to submit
+    and the enter button to submit\n
+    ---
+    Arguments:
+    * title - title of the option menu
+    * options - list of options
+    * bg - the background color for a highlighted item (colorama)
+    * text_color - the color for the text (colorama)
+    ---
+    Return type: ```None```
     '''
+    
+    try:
+        options = [str(option) for option in options]
+    except:
+        raise TypeError("All options must be castable to strings!")
+
     indexSelected = 0  
     def draw():
         stringToPrint = title + "\n"
         for index, option in enumerate(options):
             if index == indexSelected:
-                stringToPrint += f"  • {color}{Fore.BLACK}{option}{Back.BLACK}{Fore.WHITE}\n"
+                stringToPrint += f"  • {bg}{text_color}{option}{Back.BLACK}{Fore.WHITE}\n"
             else:
                 stringToPrint += f"  • {option}\n"
         print(stringToPrint)
